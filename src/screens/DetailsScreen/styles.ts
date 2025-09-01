@@ -119,7 +119,7 @@ export const WatchButtonText = styled.Text(
 )
 
 export const HeaderContainer = styled.View<{ hasBackdrop?: boolean }>(
-    ({ theme: { spacing }, hasBackdrop }) => css`
+  ({ theme: { spacing }, hasBackdrop }) => css`
     position: relative;
     ${!hasBackdrop &&
     css`

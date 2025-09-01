@@ -12,7 +12,7 @@ export const SearchContainer = styled.View(
     padding: 0 ${spacing(2)}px;
     height: 44px;
     background-color: transparent;
-    margin: ${spacing(5)}px 0;
+    margin: ${spacing(3)}px 0;
   `
 )
 

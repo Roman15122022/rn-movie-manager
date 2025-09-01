@@ -13,6 +13,7 @@ import {
 import { X } from 'lucide-react-native'
 import { useHomeScreen } from '@/screens/HomeScreen/useHomeScreen'
 import { ICONS_SIZE } from '@/screens/HomeScreen/constants'
+import { GenresBar } from '@/features/GenreBar'
 
 export default function HomeScreen(): JSX.Element {
   const {
@@ -54,6 +55,8 @@ export default function HomeScreen(): JSX.Element {
             <TabText>Favorites</TabText>
           </TabButton>
         </Tabs>
+
+        <GenresBar />
 
         <SearchContainer>
           <SearchInput

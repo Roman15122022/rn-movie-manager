@@ -21,7 +21,7 @@ import {
   HeaderContainer,
 } from './styles'
 import { useDetailsScreen } from './useDetailsScreen'
-import {ICON_SIZE} from "@/screens/DetailsScreen/constants";
+import { ICON_SIZE } from '@/screens/DetailsScreen/constants'
 
 const DetailsScreen = (): JSX.Element => {
   const {
@@ -50,7 +50,7 @@ const DetailsScreen = (): JSX.Element => {
       <Container>
         <HeaderContainer hasBackdrop={!!backdropUri} pointerEvents="box-none">
           {backdropUri ? (
-              <Backdrop source={backdropUri} resizeMode="cover" />
+            <Backdrop source={backdropUri} resizeMode="cover" />
           ) : null}
 
           <BackButton onPress={goBack} activeOpacity={0.7}>
