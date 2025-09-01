@@ -1,11 +1,9 @@
 import { forwardRef } from 'react'
 import { FlatList } from 'react-native'
-import { Button, ButtonText } from '@/components/Button'
 import { Card } from '@/components/Card'
 import { Title } from '@/components/Title'
 import {
   InfoRow,
-  ActionsRow,
   Label,
   Value,
   ScrollTopButton,
@@ -53,7 +51,7 @@ export const MoviesList = forwardRef<any, Props>(
             const year = item.release_date?.slice(0, 4) || '—'
             const isFavorite = favorites.includes(item.id)
             return (
-              <Card>
+              <Card onPress={() => openMovie(item.id, item.title)}>
                 <TitleRow>
                   <TitleText>{item.title}</TitleText>
                   <Star
@@ -68,14 +66,6 @@ export const MoviesList = forwardRef<any, Props>(
                   <Value>{year}</Value>
                 </InfoRow>
                 <MovieExtraInfo item={item} dict={dict} />
-                <ActionsRow>
-                  <Button
-                    onPress={() => openMovie(item.id, item.title)}
-                    style={{ flex: 1 }}
-                  >
-                    <ButtonText>Open</ButtonText>
-                  </Button>
-                </ActionsRow>
               </Card>
             )
           }}
