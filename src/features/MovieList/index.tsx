@@ -3,11 +3,11 @@ import { FlatList } from 'react-native'
 import { Button, ButtonText } from '@/components/Button'
 import { Card } from '@/components/Card'
 import { Title } from '@/components/Title'
-import { ICON_SIZE, VIEW_CONFIG } from './constants'
+import { InfoRow, ActionsRow, Label, Value, ScrollTopButton } from './styles'
+import { VIEW_CONFIG } from './constants'
 import { useMovieList } from './useMovieList'
-import { MovieExtraInfo } from '@/features/MovieExtraInfo'
 import { Props } from './types'
-import { InfoRow, ActionsRow, Value, Label, ScrollTopButton } from './styles'
+import { MovieExtraInfo } from '@/features/MovieExtraInfo'
 import { ArrowUp } from 'lucide-react-native'
 
 export const MoviesList = forwardRef<any, Props>(
@@ -16,12 +16,12 @@ export const MoviesList = forwardRef<any, Props>(
       data,
       favorites,
       onlyFavs,
-      isLoading,
-      isFetchingNext,
-      hasNextPage,
       onToggleFav,
       onEndReached,
       onScroll,
+      isFetchingNext,
+      hasNextPage,
+      canAutoPaginate,
       showScrollTop,
       onScrollTopPress,
     },
@@ -35,11 +35,11 @@ export const MoviesList = forwardRef<any, Props>(
           ref={ref}
           data={data}
           keyExtractor={(item, index) => `${item.id}-${index}`}
-          contentContainerStyle={{ paddingVertical: 8 }}
+          contentContainerStyle={{ paddingVertical: 8, paddingBottom: 72 }}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={VIEW_CONFIG}
           onEndReachedThreshold={0.5}
-          onEndReached={onEndReached}
+          onEndReached={canAutoPaginate ? onEndReached : undefined}
           onScroll={onScroll}
           renderItem={({ item }) => {
             const year = item.release_date?.slice(0, 4) || '—'
@@ -72,29 +72,26 @@ export const MoviesList = forwardRef<any, Props>(
             )
           }}
           ListEmptyComponent={
-            !isLoading ? (
-              <Card>
-                <Title>Nothing to show</Title>
-                <Value>
-                  {onlyFavs && favorites.length === 0
-                    ? 'Favorites filter is ON, but you have no favorites yet.'
-                    : 'Try searching another title.'}
-                </Value>
-              </Card>
-            ) : null
+            <Card>
+              <Title>Nothing to show</Title>
+              <Value>
+                {onlyFavs && favorites.length === 0
+                  ? 'Favorites filter is ON, but you have no favorites yet.'
+                  : 'Try searching another title.'}
+              </Value>
+            </Card>
           }
           ListFooterComponent={
-            isFetchingNext && hasNextPage ? (
+            canAutoPaginate && isFetchingNext && hasNextPage ? (
               <Value style={{ textAlign: 'center', paddingVertical: 12 }}>
                 Loading…
               </Value>
             ) : null
           }
         />
-
         {showScrollTop && (
           <ScrollTopButton onPress={onScrollTopPress}>
-            <ArrowUp size={ICON_SIZE} />
+            <ArrowUp size={22} color="#fff" />
           </ScrollTopButton>
         )}
       </>

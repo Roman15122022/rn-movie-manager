@@ -1,4 +1,3 @@
-// useHomeScreen.ts
 import { useMemo, useRef, useState } from 'react'
 import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native'
 import { useDebounceState } from '@/hooks/useDebouncedState'
@@ -20,11 +19,11 @@ export const useHomeScreen = () => {
   const { favorites, isOnlyFavs, toggleFav, toggleOnlyFavs } = useMovies()
 
   const {
-    data: popData,
+    data: popularData,
     fetchNextPage: fetchPopularNext,
     hasNextPage: hasPopularNext,
     isFetchingNextPage: isFetchingPopularNext,
-    isFetching: isFetchingPopular,
+    isLoading: isPopularInitialLoading,
   } = usePopularInfinite()
 
   const {
@@ -32,41 +31,46 @@ export const useHomeScreen = () => {
     fetchNextPage: fetchSearchNext,
     hasNextPage: hasSearchNext,
     isFetchingNextPage: isFetchingSearchNext,
-    isFetching: isFetchingSearch,
+    isLoading: isSearchInitialLoading,
   } = useSearchInfinite(debouncedSearchValue)
 
   const isSearch = debouncedSearchValue.trim().length > 0
-  const pages = isSearch ? searchData?.pages : popData?.pages
+  const pages = isSearch ? searchData?.pages : popularData?.pages
 
   const movies = useMemo<TmdbMovie[]>(() => {
-    const all = pages?.flatMap((p) => p.results) ?? []
-    const unique = Array.from(new Map(all.map((m) => [m.id, m])).values())
+    const all = pages?.flatMap((page) => page.results) ?? []
+    const unique = Array.from(
+      new Map(all.map((movie) => [movie.id, movie])).values()
+    )
     const filtered = isOnlyFavs
-      ? unique.filter((m) => favorites.includes(m.id))
+      ? unique.filter((movie) => favorites.includes(movie.id))
       : unique
     return filtered.slice().sort((a, b) => a.title.localeCompare(b.title))
   }, [pages, isOnlyFavs, favorites])
 
-  const isLoading = isFetchingPopular || isFetchingSearch
+  const isInitialLoading = isSearch
+    ? isSearchInitialLoading
+    : isPopularInitialLoading
   const isFetchingNext = isSearch ? isFetchingSearchNext : isFetchingPopularNext
   const hasNextPage = isSearch ? !!hasSearchNext : !!hasPopularNext
+  const fetchNextPage = isSearch ? fetchSearchNext : fetchPopularNext
 
   const canAutoPaginate = !isOnlyFavs
-  const listRef = useRef<any>(null)
+
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const listRef = useRef<any>(null)
 
   const onEndReached = () => {
     if (!canAutoPaginate) return
-    if (isFetchingNext || !hasNextPage) return
-    ;(isSearch ? fetchSearchNext : fetchPopularNext)()
+    if (!isFetchingNext && hasNextPage) fetchNextPage()
   }
 
-  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { y } = e.nativeEvent.contentOffset
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { y } = event.nativeEvent.contentOffset
     setShowScrollTop(y > SHOW_TOP_AFTER_PX)
   }
 
-  const scrollToTop = (): void => {
+  const scrollToTop = () => {
     listRef.current?.scrollToOffset?.({ offset: 0, animated: true })
   }
 
@@ -79,7 +83,7 @@ export const useHomeScreen = () => {
     searchValue,
     handleSearchChange,
     movies,
-    isLoading,
+    isInitialLoading,
     isFetchingNext,
     hasNextPage,
     onEndReached,

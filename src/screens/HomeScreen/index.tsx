@@ -3,21 +3,22 @@ import { ActivityIndicator } from 'react-native'
 import { Row } from '@/components/Row'
 import { Button, ButtonText } from '@/components/Button'
 import { ScreenContainer } from '@/components/Screen'
-import { useHomeScreen } from '@/screens/HomeScreen/useHomeScreen'
 import { MoviesList } from '@/features/MovieList'
 import {
-  SearchInput,
   SearchContainer,
+  SearchInput,
   ClearButton,
 } from '@/screens/HomeScreen/styles'
 import { X } from 'lucide-react-native'
+import { useHomeScreen } from '@/screens/HomeScreen/useHomeScreen'
+import {ICONS_SIZE} from "@/screens/HomeScreen/constants";
 
 export default function HomeScreen(): JSX.Element {
   const {
     searchValue,
     handleSearchChange,
     movies,
-    isLoading,
+    isInitialLoading,
     isFetchingNext,
     hasNextPage,
     onEndReached,
@@ -29,7 +30,8 @@ export default function HomeScreen(): JSX.Element {
     isOnlyFavs,
     toggleFav,
     toggleOnlyFavs,
-    handleClear,
+    canAutoPaginate,
+      handleClear,
   } = useHomeScreen()
 
   return (
@@ -57,19 +59,21 @@ export default function HomeScreen(): JSX.Element {
         </Button>
       </Row>
 
-      {isLoading && <ActivityIndicator style={{ marginTop: 24 }} />}
+      {isInitialLoading ? (
+        <ActivityIndicator style={{ marginTop: ICONS_SIZE }} />
+      ) : null}
 
       <MoviesList
         ref={listRef}
         data={movies}
         favorites={favorites}
         onlyFavs={isOnlyFavs}
-        isLoading={isLoading}
         onToggleFav={toggleFav}
         onEndReached={onEndReached}
         onScroll={onScroll}
         isFetchingNext={isFetchingNext}
         hasNextPage={hasNextPage}
+        canAutoPaginate={canAutoPaginate}
         showScrollTop={showScrollTop}
         onScrollTopPress={scrollToTop}
       />

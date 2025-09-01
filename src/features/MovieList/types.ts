@@ -4,12 +4,12 @@ export type Props = {
   data: TmdbMovie[]
   favorites: number[]
   onlyFavs: boolean
-  isLoading: boolean
-  isFetchingNext?: boolean
-  hasNextPage?: boolean
   onToggleFav: (id: number) => void
   onEndReached?: () => void
   onScroll?: any
+  isFetchingNext?: boolean
+  hasNextPage?: boolean
+  canAutoPaginate?: boolean
   showScrollTop?: boolean
   onScrollTopPress?: () => void
 }
