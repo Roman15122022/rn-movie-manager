@@ -5,5 +5,11 @@ export type Props = {
   favorites: number[]
   onlyFavs: boolean
   isLoading: boolean
+  isFetchingNext?: boolean
+  hasNextPage?: boolean
   onToggleFav: (id: number) => void
+  onEndReached?: () => void
+  onScroll?: any
+  showScrollTop?: boolean
+  onScrollTopPress?: () => void
 }

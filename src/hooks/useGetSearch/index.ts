@@ -1,11 +1,16 @@
-import { useQuery } from '@tanstack/react-query'
-import { QueryKeys } from '@/types/enums'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { qSearch } from '@/services/tmdb'
+import { QueryKeys } from '@/types/enums'
+import type { SearchResponse } from '@/services/types'
 
-export const useGetSearch = (text: string) => {
-  return useQuery({
-    queryKey: [QueryKeys.Search, text],
-    queryFn: () => qSearch(text, 1),
-    enabled: false,
+export const useSearchInfinite = (term: string) =>
+  useInfiniteQuery<SearchResponse>({
+    queryKey: [QueryKeys.Search, term],
+    queryFn: ({ pageParam = 1 }) => qSearch(term, pageParam as number),
+    enabled: term.trim().length > 0,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const next = lastPage.page + 1
+      return next <= lastPage.total_pages ? next : undefined
+    },
   })
-}

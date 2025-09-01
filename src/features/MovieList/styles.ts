@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components/native'
 import { Row } from '@/components/Row'
+import { TouchableOpacity } from 'react-native'
 
 export const ActionsRow = styled(Row)`
   margin-top: ${({ theme }) => theme.spacing(3)}px;
@@ -39,3 +40,15 @@ export const Value = styled.Text(
     font-size: ${font.small}px;
   `
 )
+
+export const ScrollTopButton = styled(TouchableOpacity)`
+  position: absolute;
+  right: 16px;
+  bottom: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  justify-content: center;
+  align-items: center;
+`
