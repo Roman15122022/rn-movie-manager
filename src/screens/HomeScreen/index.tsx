@@ -1,13 +1,14 @@
 import { JSX } from 'react'
-import { ActivityIndicator } from 'react-native'
-import { Row } from '@/components/Row'
-import { Button, ButtonText } from '@/components/Button'
+import { ActivityIndicator, View } from 'react-native'
 import { ScreenContainer } from '@/components/Screen'
 import { MoviesList } from '@/features/MovieList'
 import {
   SearchContainer,
   SearchInput,
   ClearButton,
+  Tabs,
+  TabButton,
+  TabText,
 } from '@/screens/HomeScreen/styles'
 import { X } from 'lucide-react-native'
 import { useHomeScreen } from '@/screens/HomeScreen/useHomeScreen'
@@ -36,7 +37,24 @@ export default function HomeScreen(): JSX.Element {
 
   return (
     <ScreenContainer>
-      <Row style={{ paddingHorizontal: 4, paddingTop: 4 }}>
+      <View style={{ paddingHorizontal: 8, paddingTop: 8 }}>
+        <Tabs>
+          <TabButton
+            left
+            active={!isOnlyFavs}
+            onPress={() => isOnlyFavs && toggleOnlyFavs()}
+          >
+            <TabText>All</TabText>
+          </TabButton>
+          <TabButton
+            right
+            active={isOnlyFavs}
+            onPress={() => !isOnlyFavs && toggleOnlyFavs()}
+          >
+            <TabText>Favorites</TabText>
+          </TabButton>
+        </Tabs>
+
         <SearchContainer>
           <SearchInput
             placeholder="Search..."
@@ -50,14 +68,7 @@ export default function HomeScreen(): JSX.Element {
             </ClearButton>
           )}
         </SearchContainer>
-        <Button
-          variant="secondary"
-          onPress={toggleOnlyFavs}
-          style={{ marginLeft: 8, marginBottom: 8 }}
-        >
-          <ButtonText>{isOnlyFavs ? 'All' : 'Favs'}</ButtonText>
-        </Button>
-      </Row>
+      </View>
 
       {isInitialLoading ? (
         <ActivityIndicator style={{ marginTop: ICONS_SIZE }} />

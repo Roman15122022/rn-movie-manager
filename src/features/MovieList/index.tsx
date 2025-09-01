@@ -10,7 +10,7 @@ import {
   TitleText,
   TitleRow,
 } from './styles'
-import { VIEW_CONFIG } from './constants'
+import { ICON_SIZE, VIEW_CONFIG } from './constants'
 import { useMovieList } from './useMovieList'
 import { Props } from './types'
 import { MovieExtraInfo } from '@/features/MovieExtraInfo'
@@ -89,7 +89,7 @@ export const MoviesList = forwardRef<any, Props>(
         />
         {showScrollTop && (
           <ScrollTopButton onPress={onScrollTopPress}>
-            <ArrowUp size={22} color="#fff" />
+            <ArrowUp size={ICON_SIZE} color="#fff" />
           </ScrollTopButton>
         )}
       </>

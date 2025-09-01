@@ -71,7 +71,7 @@ export const ScrollTopButton = styled(TouchableOpacity)`
   width: 48px;
   height: 48px;
   border-radius: 24px;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   justify-content: center;
   align-items: center;
 `
