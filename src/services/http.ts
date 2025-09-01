@@ -1,22 +1,23 @@
 import { BASE } from '@/services/constants'
-
-export type HttpInit = RequestInit & { retry?: number }
+import { HttpInit } from '@/services/types'
 
 export async function http(path: string, init: HttpInit = {}) {
-  const res = await fetch(`${BASE}${path}`, {
+  const token = process.env.EXPO_PUBLIC_TMDB_KEY?.trim()
+  const url = `${BASE}${path}`
+  const res = await fetch(url, {
     ...init,
     headers: {
-      Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_KEY}`,
-      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
       ...(init.headers || {}),
     },
   })
   if (!res.ok) {
+    const text = await res.text().catch(() => '')
     if (init.retry && init.retry > 0 && res.status >= 500) {
       return http(path, { ...init, retry: init.retry - 1 })
     }
-    const msg = await res.text().catch(() => '')
-    throw new Error(`HTTP ${res.status}: ${msg || 'Error'}`)
+    throw new Error(`HTTP ${res.status}: ${text || 'Error'}`)
   }
   return res.json()
 }
