@@ -5,21 +5,19 @@ import { Button, ButtonText } from '@/components/Button'
 import { ScreenContainer } from '@/components/Screen'
 import { useHomeScreen } from '@/screens/HomeScreen/useHomeScreen'
 import { MoviesList } from '@/features/MovieList'
-import {SearchInput} from "@/screens/HomeScreen/styles";
+import { SearchInput } from '@/screens/HomeScreen/styles'
 
 export default function HomeScreen(): JSX.Element {
   const {
-    refetchSearch,
-    setText,
-    text,
+    handleSearch,
+    searchValue,
     isLoading,
     toggleOnlyFavs,
     toggleFav,
-    list,
-    onlyFavs,
+    moviesList,
+    isOnlyFavs,
     favorites,
   } = useHomeScreen()
-
 
   return (
     <ScreenContainer>
@@ -27,25 +25,24 @@ export default function HomeScreen(): JSX.Element {
         <SearchInput
           placeholder="Search..."
           placeholderTextColor="#8b8b8b"
-          value={text}
-          onChangeText={setText}
-          onSubmitEditing={() => refetchSearch()}
+          value={searchValue}
+          onChangeText={handleSearch}
         />
         <Button
           variant="secondary"
           onPress={toggleOnlyFavs}
           style={{ marginLeft: 8 }}
         >
-          <ButtonText>{onlyFavs ? 'All' : 'Favs'}</ButtonText>
+          <ButtonText>{isOnlyFavs ? 'All' : 'Favs'}</ButtonText>
         </Button>
       </Row>
 
       {isLoading && <ActivityIndicator style={{ marginTop: 24 }} />}
 
       <MoviesList
-        data={list}
+        data={moviesList}
         favorites={favorites}
-        onlyFavs={onlyFavs}
+        onlyFavs={isOnlyFavs}
         isLoading={isLoading}
         onToggleFav={toggleFav}
       />

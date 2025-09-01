@@ -1,6 +1,6 @@
 export type MoviesFavoritesContextType = {
   favorites: number[]
-  onlyFavs: boolean
+  isOnlyFavs: boolean
   toggleFav: (id: number) => void
   toggleOnlyFavs: () => void
 }

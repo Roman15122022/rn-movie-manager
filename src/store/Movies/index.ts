@@ -8,7 +8,7 @@ export const useMovies = create<MoviesFavoritesContextType>()(
   persist(
     (set, get) => ({
       favorites: [],
-      onlyFavs: false,
+      isOnlyFavs: false,
       toggleFav: (id) => {
         const cur = get().favorites
         set({
@@ -17,7 +17,7 @@ export const useMovies = create<MoviesFavoritesContextType>()(
             : [...cur, id],
         })
       },
-      toggleOnlyFavs: () => set((s) => ({ onlyFavs: !s.onlyFavs })),
+      toggleOnlyFavs: () => set((s) => ({ isOnlyFavs: !s.isOnlyFavs })),
     }),
     {
       name: NAME_STORE_MOVIES_FAV,

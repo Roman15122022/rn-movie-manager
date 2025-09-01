@@ -6,4 +6,5 @@ export enum Screens {
 export enum QueryKeys {
   Popular = 'popular',
   Search = 'search',
+  Movie = 'movie',
 }

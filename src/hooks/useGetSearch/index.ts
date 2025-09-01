@@ -6,5 +6,6 @@ export const useGetSearch = (text: string) => {
   return useQuery({
     queryKey: [QueryKeys.Search, text],
     queryFn: () => qSearch(text, 1),
+    enabled: false,
   })
 }

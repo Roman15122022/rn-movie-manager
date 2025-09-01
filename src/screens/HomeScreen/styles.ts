@@ -1,9 +1,9 @@
-import styled from "styled-components/native";
-import {TextInput} from "react-native";
-import {css} from "styled-components";
+import styled from 'styled-components/native'
+import { TextInput } from 'react-native'
+import { css } from 'styled-components'
 
 export const SearchInput = styled(TextInput)(
-    ({ theme: { spacing, colors, radius } }) => css`
+  ({ theme: { spacing, colors, radius } }) => css`
     flex: 1;
     color: ${colors.text};
     border-width: 1px;

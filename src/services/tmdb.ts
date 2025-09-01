@@ -3,6 +3,7 @@ import {
   PopularResponse,
   MovieDetailsResponse,
   SearchResponse,
+  GenresResponse,
 } from '@/services/types'
 
 export function getPopular(page = 1): Promise<PopularResponse> {
@@ -20,4 +21,8 @@ export function qSearch(term: string, page = 1): Promise<SearchResponse> {
     `/search/movie?query=${encodeURIComponent(term)}&language=en-US&page=${page}&include_adult=false`,
     { retry: 2 }
   )
+}
+
+export function getGenres(): Promise<GenresResponse> {
+  return http(`/genre/movie/list?language=en-US`, { retry: 1 })
 }

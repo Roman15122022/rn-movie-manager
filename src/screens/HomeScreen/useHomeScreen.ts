@@ -1,44 +1,48 @@
-import { useNavigation } from '@react-navigation/native'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useMovies } from '@/store/Movies'
 import { useGetPopular } from '@/hooks/useGetPopular'
 import { useGetSearch } from '@/hooks/useGetSearch'
+import { TmdbMovie } from '@/services/types'
+import { DEFAULT_DEBOUNCED_DELAY } from '@/constants'
+import { useDebounceState } from '@/hooks/useDebouncedState'
 
 export const useHomeScreen = () => {
-  const nav = useNavigation<any>()
-  const [text, setText] = useState('')
-  const { favorites, onlyFavs, toggleFav, toggleOnlyFavs } = useMovies()
+  const [searchValue, debouncedSearchValue, handleSearchChange] =
+    useDebounceState('', DEFAULT_DEBOUNCED_DELAY)
+  const { favorites, isOnlyFavs, toggleFav, toggleOnlyFavs } = useMovies()
 
-  const { data: popularData, isFetching: isFetchingPopular } = useGetPopular()
-  const {
-    data: searchData,
-    isFetching: isFetchingSearch,
-    refetch: refetchSearch,
-  } = useGetSearch(text)
+  const { data: popularMovies, isFetching: isFetchingPopular } = useGetPopular()
+  const { data: searchedMovies, isFetching: isFetchingSearch } =
+    useGetSearch(debouncedSearchValue)
 
-  const list = useMemo(() => {
-    const src = text.trim()
-      ? (searchData?.results ?? [])
-      : (popularData?.results ?? [])
+  const moviesList = useMemo<TmdbMovie[]>(() => {
+    const source =
+      debouncedSearchValue.trim().length > 0
+        ? (searchedMovies?.results ?? [])
+        : (popularMovies?.results ?? [])
+
     const filtered =
-      onlyFavs && favorites.length > 0
-        ? src.filter((m: any) => favorites.includes(m.id))
-        : src
-    return filtered
-      .slice()
-      .sort((a: any, b: any) => a.title.localeCompare(b.title))
-  }, [text, searchData?.results, popularData?.results, onlyFavs, favorites])
+      isOnlyFavs && favorites.length > 0
+        ? source.filter((movie) => favorites.includes(movie.id))
+        : source
+
+    return filtered.slice().sort((a, b) => a.title.localeCompare(b.title))
+  }, [
+    debouncedSearchValue,
+    searchedMovies?.results,
+    popularMovies?.results,
+    isOnlyFavs,
+    favorites,
+  ])
 
   return {
-    text,
-    setText,
+    searchValue,
+    handleSearch: handleSearchChange,
+    moviesList,
+    isLoading: isFetchingPopular || isFetchingSearch,
     toggleFav,
     toggleOnlyFavs,
-    refetchSearch,
-    list,
-    isLoading: isFetchingPopular || isFetchingSearch,
-    nav,
-    onlyFavs,
+    isOnlyFavs,
     favorites,
   }
 }

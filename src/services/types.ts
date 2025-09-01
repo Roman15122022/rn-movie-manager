@@ -1,5 +1,7 @@
 export type HttpInit = RequestInit & { retry?: number }
 
+export type GenresResponse = { genres: TmdbGenre[] }
+
 export type Id<T = number> = { id: T }
 export type Name<N = string> = { name: N }
 
