@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components/native'
 import { TextInput, TouchableOpacity } from 'react-native'
 
 export const SearchContainer = styled.View(
-    ({ theme: { colors, radius, spacing } }) => css`
+  ({ theme: { colors, radius, spacing } }) => css`
     flex-direction: row;
     align-items: center;
     width: 100%;
@@ -17,20 +17,20 @@ export const SearchContainer = styled.View(
 )
 
 export const SearchInput = styled(TextInput)(
-    ({ theme: { colors } }) => css`
+  ({ theme: { colors } }) => css`
     flex: 1;
     color: ${colors.text};
   `
 )
 
 export const ClearButton = styled(TouchableOpacity)(
-    ({ theme: { spacing } }) => css`
+  ({ theme: { spacing } }) => css`
     margin-left: ${spacing(1)}px;
   `
 )
 
 export const Tabs = styled.View(
-    ({ theme: { spacing } }) => css`
+  ({ theme: { spacing } }) => css`
     flex-direction: row;
     width: 100%;
     margin-top: ${spacing(1)}px;
@@ -42,7 +42,7 @@ export const TabButton = styled(TouchableOpacity)<{
   left?: boolean
   right?: boolean
 }>(
-    ({ theme: { colors, radius }, active, left, right }) => css`
+  ({ theme: { colors, radius }, active, left, right }) => css`
     flex: 1;
     padding: 10px 0;
     background-color: ${active ? colors.secondary : colors.card};
@@ -64,7 +64,7 @@ export const TabButton = styled(TouchableOpacity)<{
 )
 
 export const TabText = styled.Text(
-    ({ theme: { colors, font } }) => css`
+  ({ theme: { colors, font } }) => css`
     color: ${colors.text};
     font-size: ${font.small}px;
     font-weight: 600;
