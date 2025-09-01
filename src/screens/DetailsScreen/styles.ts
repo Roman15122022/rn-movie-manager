@@ -118,9 +118,16 @@ export const WatchButtonText = styled.Text(
   `
 )
 
-export const HeaderContainer = styled.View`
-  position: relative;
-`
+export const HeaderContainer = styled.View<{ hasBackdrop?: boolean }>(
+    ({ theme: { spacing }, hasBackdrop }) => css`
+    position: relative;
+    ${!hasBackdrop &&
+    css`
+      padding-top: ${spacing(6)}px;
+      min-height: 80px;
+    `}
+  `
+)
 
 export const Backdrop = styled(Image)`
   width: 100%;

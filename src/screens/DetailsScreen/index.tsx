@@ -48,15 +48,12 @@ const DetailsScreen = (): JSX.Element => {
   return (
     <ScreenContainer>
       <Container>
-        <HeaderContainer pointerEvents="box-none">
+        <HeaderContainer hasBackdrop={!!backdropUri} pointerEvents="box-none">
           {backdropUri ? (
-            <Backdrop source={backdropUri} resizeMode="cover" />
+              <Backdrop source={backdropUri} resizeMode="cover" />
           ) : null}
 
-          <BackButton
-            onPress={goBack}
-            activeOpacity={0.7}
-          >
+          <BackButton onPress={goBack} activeOpacity={0.7}>
             <ArrowLeft size={ICON_SIZE} color="#fff" />
           </BackButton>
         </HeaderContainer>
