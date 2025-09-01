@@ -1,6 +1,9 @@
 import styled from 'styled-components/native'
+import { TouchableOpacity } from 'react-native'
 
-export const Card = styled.View`
+export const Card = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.8,
+})`
   background-color: ${({ theme }) => theme.colors.card};
   border-radius: ${({ theme }) => theme.radius.m}px;
   padding: ${({ theme }) => theme.spacing(4)}px;

@@ -6,8 +6,9 @@ export const lightTheme = {
     primary: '#6C5CE7',
     secondary: '#00D1B2',
     border: '#2A2A33',
+    muted: '#9CA3AF',
   },
   spacing: (n: number) => 4 * n,
   radius: { s: 8, m: 12, l: 20 },
-  font: { h1: 24, h2: 18, body: 16, small: 14 },
+  font: { h1: 20, h2: 18, body: 16, small: 14 },
 }
