@@ -11,7 +11,7 @@ import {
 } from '@/screens/HomeScreen/styles'
 import { X } from 'lucide-react-native'
 import { useHomeScreen } from '@/screens/HomeScreen/useHomeScreen'
-import {ICONS_SIZE} from "@/screens/HomeScreen/constants";
+import { ICONS_SIZE } from '@/screens/HomeScreen/constants'
 
 export default function HomeScreen(): JSX.Element {
   const {
@@ -31,7 +31,7 @@ export default function HomeScreen(): JSX.Element {
     toggleFav,
     toggleOnlyFavs,
     canAutoPaginate,
-      handleClear,
+    handleClear,
   } = useHomeScreen()
 
   return (
@@ -46,14 +46,14 @@ export default function HomeScreen(): JSX.Element {
           />
           {searchValue.length > 0 && (
             <ClearButton onPress={handleClear}>
-              <X size={20} color="#8b8b8b" />
+              <X size={ICONS_SIZE} color="#8b8b8b" />
             </ClearButton>
           )}
         </SearchContainer>
         <Button
           variant="secondary"
           onPress={toggleOnlyFavs}
-          style={{ marginLeft: 8 }}
+          style={{ marginLeft: 8, marginBottom: 8 }}
         >
           <ButtonText>{isOnlyFavs ? 'All' : 'Favs'}</ButtonText>
         </Button>

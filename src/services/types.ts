@@ -15,6 +15,9 @@ export type BaseMovie = Id & {
   popularity: number
   vote_average: number
   vote_count: number
+  adult: boolean
+  original_language: string
+  video: boolean
 }
 
 export type TmdbMovie = BaseMovie & {

@@ -6,6 +6,23 @@ export const ActionsRow = styled(Row)`
   margin-top: ${({ theme }) => theme.spacing(3)}px;
 `
 
+export const TitleRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${({ theme }) => theme.spacing(1)}px;
+`
+
+export const TitleText = styled.Text(
+  ({ theme: { colors, font } }) => css`
+    color: ${colors.text};
+    font-size: ${font.h2}px;
+    font-weight: 700;
+    flex: 1;
+    margin-right: 8px;
+  `
+)
+
 export const Meta = styled.Text(
   ({ theme: { colors, font } }) => css`
     color: ${colors.muted};
@@ -23,6 +40,7 @@ export const Director = styled.Text(
 
 export const InfoRow = styled(Row)`
   margin-top: ${({ theme }) => theme.spacing(1)}px;
+  align-items: flex-start;
 `
 
 export const Label = styled.Text(
@@ -31,13 +49,18 @@ export const Label = styled.Text(
     font-size: ${font.small}px;
     font-weight: 600;
     margin-right: 6px;
+    min-width: 60px;
   `
 )
 
-export const Value = styled.Text(
+export const Value = styled.Text.attrs({
+  numberOfLines: 2,
+  ellipsizeMode: 'tail',
+})(
   ({ theme: { colors, font } }) => css`
     color: ${colors.text};
     font-size: ${font.small}px;
+    flex: 1;
   `
 )
 

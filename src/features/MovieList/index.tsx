@@ -3,12 +3,20 @@ import { FlatList } from 'react-native'
 import { Button, ButtonText } from '@/components/Button'
 import { Card } from '@/components/Card'
 import { Title } from '@/components/Title'
-import { InfoRow, ActionsRow, Label, Value, ScrollTopButton } from './styles'
+import {
+  InfoRow,
+  ActionsRow,
+  Label,
+  Value,
+  ScrollTopButton,
+  TitleText,
+  TitleRow,
+} from './styles'
 import { VIEW_CONFIG } from './constants'
 import { useMovieList } from './useMovieList'
 import { Props } from './types'
 import { MovieExtraInfo } from '@/features/MovieExtraInfo'
-import { ArrowUp } from 'lucide-react-native'
+import { ArrowUp, Star } from 'lucide-react-native'
 
 export const MoviesList = forwardRef<any, Props>(
   (
@@ -43,9 +51,18 @@ export const MoviesList = forwardRef<any, Props>(
           onScroll={onScroll}
           renderItem={({ item }) => {
             const year = item.release_date?.slice(0, 4) || '—'
+            const isFavorite = favorites.includes(item.id)
             return (
               <Card>
-                <Title>{item.title}</Title>
+                <TitleRow>
+                  <TitleText>{item.title}</TitleText>
+                  <Star
+                    size={20}
+                    color={isFavorite ? '#FFD700' : '#888'}
+                    fill={isFavorite ? '#FFD700' : 'transparent'}
+                    onPress={() => onToggleFav(item.id)}
+                  />
+                </TitleRow>
                 <InfoRow>
                   <Label>Year:</Label>
                   <Value>{year}</Value>
@@ -57,15 +74,6 @@ export const MoviesList = forwardRef<any, Props>(
                     style={{ flex: 1 }}
                   >
                     <ButtonText>Open</ButtonText>
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onPress={() => onToggleFav(item.id)}
-                    style={{ flex: 1 }}
-                  >
-                    <ButtonText>
-                      {favorites.includes(item.id) ? 'Remove' : 'Favorite'}
-                    </ButtonText>
                   </Button>
                 </ActionsRow>
               </Card>

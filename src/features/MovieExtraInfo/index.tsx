@@ -19,11 +19,24 @@ function MovieExtraInfoBase({ item, dict }: MovieExtraInfoProps) {
   const director =
     data?.credits.crew.find((c) => c.job === 'Director')?.name ?? '—'
 
+  const stars = useMemo(
+    () =>
+      (data?.credits.cast ?? [])
+        .slice(0, 3)
+        .map((actor) => actor.name)
+        .join(', '),
+    [data?.credits.cast]
+  )
+
   return (
     <>
       <InfoRow>
         <Label>Genres:</Label>
         <Value>{genres || '—'}</Value>
+      </InfoRow>
+      <InfoRow>
+        <Label>Stars:</Label>
+        <Value>{stars || '—'}</Value>
       </InfoRow>
       <InfoRow>
         <Label>Director:</Label>
