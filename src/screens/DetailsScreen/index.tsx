@@ -1,11 +1,10 @@
 import { JSX } from 'react'
 import { ActivityIndicator } from 'react-native'
 import { ScreenContainer } from '@/components/Screen'
-import { Star } from 'lucide-react-native'
+import { ArrowLeft, Star } from 'lucide-react-native'
 import {
   Backdrop,
   Container,
-  Header,
   Info,
   Label,
   Meta,
@@ -18,8 +17,11 @@ import {
   TitleRow,
   WatchButton,
   WatchButtonText,
+  BackButton,
+  HeaderContainer,
 } from './styles'
 import { useDetailsScreen } from './useDetailsScreen'
+import {ICON_SIZE} from "@/screens/DetailsScreen/constants";
 
 const DetailsScreen = (): JSX.Element => {
   const {
@@ -40,15 +42,24 @@ const DetailsScreen = (): JSX.Element => {
     stars,
     data,
     handleWatchNow,
+    goBack,
   } = useDetailsScreen()
 
   return (
     <ScreenContainer>
       <Container>
-        <Header />
-        {backdropUri ? (
-          <Backdrop source={backdropUri} resizeMode="cover" />
-        ) : null}
+        <HeaderContainer pointerEvents="box-none">
+          {backdropUri ? (
+            <Backdrop source={backdropUri} resizeMode="cover" />
+          ) : null}
+
+          <BackButton
+            onPress={goBack}
+            activeOpacity={0.7}
+          >
+            <ArrowLeft size={ICON_SIZE} color="#fff" />
+          </BackButton>
+        </HeaderContainer>
 
         <PosterRow>
           <Poster source={posterUri} resizeMode="cover" />
@@ -57,7 +68,7 @@ const DetailsScreen = (): JSX.Element => {
               <Title>{data?.title || '—'}</Title>
               <StarButton onPress={onToggleFavorite} activeOpacity={0.7}>
                 <Star
-                  size={22}
+                  size={ICON_SIZE}
                   color={isFavorite ? '#FFD700' : '#888'}
                   fill={isFavorite ? '#FFD700' : 'transparent'}
                 />

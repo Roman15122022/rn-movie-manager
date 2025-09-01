@@ -4,15 +4,19 @@ import { useSelection } from '@/store/SelectedMovie'
 import { useGetMovie } from '@/hooks/useGetMovie'
 import { useGenres } from '@/hooks/useGetGenres'
 import { Linking } from 'react-native'
-
-const IMG_BASE = 'https://image.tmdb.org/t/p'
-const SIZE_POSTER = '/w500'
-const SIZE_BACKDROP = '/w780'
+import {
+  IMG_BASE,
+  SIZE_BACKDROP,
+  SIZE_POSTER,
+} from '@/screens/DetailsScreen/constants'
+import { useNavigate } from '@/hooks/useAppNavigation'
 
 export const useDetailsScreen = () => {
   const { selectedId } = useSelection()
   const { dict } = useGenres()
   const { toggleFav, favorites } = useMovies()
+
+  const { goBack } = useNavigate()
 
   const id = selectedId || 0
   const { data, status, error, refetch, isFetching } = useGetMovie(id)
@@ -79,5 +83,6 @@ export const useDetailsScreen = () => {
     director,
     stars,
     handleWatchNow,
+    goBack,
   }
 }

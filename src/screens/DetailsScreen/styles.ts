@@ -15,13 +15,6 @@ export const Header = styled.View(
   `
 )
 
-export const Backdrop = styled(Image)`
-  width: 100%;
-  height: 180px;
-  border-bottom-left-radius: ${({ theme }) => theme.radius.m}px;
-  border-bottom-right-radius: ${({ theme }) => theme.radius.m}px;
-`
-
 export const PosterRow = styled(Row)(
   ({ theme: { spacing } }) => css`
     margin: 0 ${spacing(2)}px;
@@ -108,7 +101,7 @@ export const WatchButton = styled.TouchableOpacity(
     position: absolute;
     left: ${spacing(4)}px;
     right: ${spacing(4)}px;
-    bottom: ${spacing(4)}px;
+    bottom: ${spacing(6)}px;
     background-color: ${colors.primary};
     padding-vertical: ${spacing(3)}px;
     border-radius: ${radius.m}px;
@@ -122,5 +115,32 @@ export const WatchButtonText = styled.Text(
     color: ${colors.text};
     font-size: ${font.h2}px;
     font-weight: 700;
+  `
+)
+
+export const HeaderContainer = styled.View`
+  position: relative;
+`
+
+export const Backdrop = styled(Image)`
+  width: 100%;
+  height: 180px;
+  border-bottom-left-radius: ${({ theme }) => theme.radius.m}px;
+  border-bottom-right-radius: ${({ theme }) => theme.radius.m}px;
+`
+
+export const BackButton = styled(TouchableOpacity)(
+  ({ theme: { spacing } }) => css`
+    position: absolute;
+    left: ${spacing(2)}px;
+    top: ${spacing(1)}px;
+    z-index: 50;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.45);
+    opacity: 0.8;
+    align-items: center;
+    justify-content: center;
   `
 )
