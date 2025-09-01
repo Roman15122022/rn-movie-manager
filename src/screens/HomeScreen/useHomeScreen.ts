@@ -1,4 +1,3 @@
-// src/screens/HomeScreen/useHomeScreen.ts
 import { useMemo, useRef, useState } from 'react'
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native'
 import { useDebounceState } from '@/hooks/useDebouncedState'
@@ -19,9 +18,7 @@ export const useHomeScreen = () => {
   ] = useDebounceState('', DEFAULT_DEBOUNCED_DELAY)
 
   const { favorites, isOnlyFavs, toggleFav, toggleOnlyFavs } = useMovies()
-
-  const { selected, mode, clear } = useSelectedGenres()
-  const selectedSet = useMemo(() => new Set(selected), [selected])
+  const { selected, clear } = useSelectedGenres()
 
   const {
     data: popularData,
@@ -39,40 +36,41 @@ export const useHomeScreen = () => {
     isLoading: isSearchInitialLoading,
   } = useSearchInfinite(debouncedSearchValue)
 
-  const isSearch = debouncedSearchValue.trim().length > 0
-  const pages = isSearch ? searchData?.pages : popularData?.pages
+  const hasSearch = debouncedSearchValue.trim().length > 0
+  const hasGenreFilter = selected.length > 0
+
+  const isSearchMode = hasSearch
+  const pages = isSearchMode ? searchData?.pages : popularData?.pages
 
   const movies = useMemo<TmdbMovie[]>(() => {
     const all = pages?.flatMap((p) => p.results) ?? []
     const unique = Array.from(new Map(all.map((m) => [m.id, m])).values())
-
     const afterFav = isOnlyFavs
       ? unique.filter((m) => favorites.includes(m.id))
       : unique
-
-    if (selectedSet.size === 0) {
+    if (selected.length === 0) {
       return afterFav.slice().sort((a, b) => a.title.localeCompare(b.title))
     }
-
+    const selectedSet = new Set(selected)
     return afterFav
       .filter((m) => {
         const ids = m.genre_ids ?? []
-        return mode === 'all'
-          ? Array.from(selectedSet).every((g) => ids.includes(g))
-          : Array.from(selectedSet).some((g) => ids.includes(g))
+        return Array.from(selectedSet).every((g) => ids.includes(g))
       })
       .slice()
       .sort((a, b) => a.title.localeCompare(b.title))
-  }, [pages, isOnlyFavs, favorites, selectedSet, mode])
+  }, [pages, isOnlyFavs, favorites, selected])
 
-  const isInitialLoading = isSearch
+  const isInitialLoading = isSearchMode
     ? isSearchInitialLoading
     : isPopularInitialLoading
-  const isFetchingNext = isSearch ? isFetchingSearchNext : isFetchingPopularNext
-  const hasNextPage = isSearch ? !!hasSearchNext : !!hasPopularNext
-  const fetchNextPage = isSearch ? fetchSearchNext : fetchPopularNext
+  const isFetchingNext = isSearchMode
+    ? isFetchingSearchNext
+    : isFetchingPopularNext
+  const hasNextPage = isSearchMode ? !!hasSearchNext : !!hasPopularNext
+  const fetchNextPage = isSearchMode ? fetchSearchNext : fetchPopularNext
 
-  const canAutoPaginate = !isOnlyFavs
+  const canAutoPaginate = !isOnlyFavs && !hasGenreFilter && !hasSearch
 
   const [showScrollTop, setShowScrollTop] = useState(false)
   const listRef = useRef<import('react-native').FlatList<TmdbMovie>>(null)
@@ -114,5 +112,6 @@ export const useHomeScreen = () => {
     toggleOnlyFavs,
     canAutoPaginate,
     handleClear,
+    fetchNextPage,
   }
 }
